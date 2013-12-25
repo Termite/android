@@ -17,6 +17,7 @@ public class Friend implements Comparable<Friend> {
 
 	private static final String TAG = "Friend";
 
+	private String mCurMessageText;
 	private String mName;
 	private int mFlags;
 	private int mLastViewedMessageId;
@@ -31,8 +32,16 @@ public class Friend implements Comparable<Friend> {
 
 	public Friend(String name) {
 		mName = name;
-
+		mCurMessageText = "";
 		SurespotLog.v(TAG, "constructor, friend: %s", this);
+	}
+
+	public String getCurMessageText() {
+		return mCurMessageText;
+	}
+
+	public void setCurMessageText(String _curMessageText) {
+		this.mCurMessageText = _curMessageText;
 	}
 
 	public String getName() {

@@ -1725,6 +1725,10 @@ public class MainActivity extends SherlockFragmentActivity implements OnMeasureL
 						mFriendHasBeenSet, mCurrentFriend == null, mKeyboardShowing, mEmojiShowing, mKeyboardShowingOnChatTab, mKeyboardShowingOnHomeTab,
 						mEmojiShowingOnChatTab);
 
+		if (mCurrentFriend != null) {
+			mCurrentFriend.setCurMessageText(mEtMessage.getText().toString());
+		}
+
 		if (friend == null) {
 			mEmojiButton.setVisibility(View.GONE);
 			mEtMessage.setVisibility(View.GONE);
@@ -1779,6 +1783,10 @@ public class MainActivity extends SherlockFragmentActivity implements OnMeasureL
 			else {
 				mEtMessage.setVisibility(View.VISIBLE);
 				mEmojiButton.setVisibility(View.VISIBLE);
+
+				String msg = friend.getCurMessageText();
+				mEtMessage.setText(msg);
+				mEtMessage.setSelection(msg.length());
 
 				// if we moved back to chat tab from home hab show the keyboard if it was showing
 				if ((mCurrentFriend == null || mCurrentFriend.isDeleted()) && mFriendHasBeenSet) {
