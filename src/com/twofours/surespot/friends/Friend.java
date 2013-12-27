@@ -351,6 +351,8 @@ public class Friend implements Comparable<Friend> {
 		friend.setSelectedItem(jsonFriend.optInt("selectedItem", -1));
 		friend.setSelectedTop(jsonFriend.optInt("selectedTop", 0));
 
+		friend.setCurMessageText(jsonFriend.optString("curMessageText"));
+
 		return friend;
 	}
 
@@ -370,6 +372,8 @@ public class Friend implements Comparable<Friend> {
 
 			jsonFriend.put("selectedItem", this.getSelectedItem());
 			jsonFriend.put("selectedTop", this.getSelectedTop());
+
+			jsonFriend.put("curMessageText", this.getCurMessageText());
 
 			return jsonFriend;
 		}
@@ -395,6 +399,7 @@ public class Friend implements Comparable<Friend> {
 		sb.append("\tavailableMessageControlId: " + getAvailableMessageControlId() + "\n");
 		sb.append("\tselectedItem: " + getSelectedItem() + "\n");
 		sb.append("\tselectedTop: " + getSelectedTop() + "\n");
+		sb.append("\tcurMessageText: " + getCurMessageText() + "\n");
 
 		return sb.toString();
 	}
