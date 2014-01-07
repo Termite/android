@@ -242,7 +242,7 @@ public class SettingsActivity extends SherlockPreferenceActivity {
 			}
 			else {
 				// notification
-				SharedPreferences pm = getPreferenceManager().getDefaultSharedPreferences(getBaseContext());
+				SharedPreferences pm = getPreferenceManager().getSharedPreferences();
 				String alarms = pm.getString("Noise", "NA");
 				Uri alarmUri = Uri.parse(alarms);
 			    //playSound(this, uri);
