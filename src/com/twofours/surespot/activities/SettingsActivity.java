@@ -42,6 +42,7 @@ import com.twofours.surespot.ui.UIUtils;
 public class SettingsActivity extends SherlockPreferenceActivity {
 	private static final String TAG = "SettingsActivity";
 	private Preference mBgImagePref;
+	private Preference mDefSoundPref;
 	private AlertDialog mHelpDialog;
 
 	@Override
@@ -113,6 +114,21 @@ public class SettingsActivity extends SherlockPreferenceActivity {
 
 					return true;
 				}
+			});
+			
+			mDefSoundPref = prefMgr.findPreference("Noise");
+			mDefSoundPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+
+				@Override
+				public boolean onPreferenceClick(Preference arg0) {
+					// TODO Auto-generated method stub
+					SurespotLog.v(TAG, "notification sound preference: " + arg0);
+					Uri uri = Uri.parse(arg0.toString());
+				    //playSound(this, uri);
+					SurespotLog.v(TAG, "notification sound uri: " + uri);
+					return false;
+				}
+				
 			});
 		}
 	}
@@ -209,18 +225,29 @@ public class SettingsActivity extends SherlockPreferenceActivity {
 		if (resultCode == RESULT_OK) {
 			Uri uri = data.getData();
 
-			File imageFile = compressImage(uri, -1);
+			if (uri != null) {
+				File imageFile = compressImage(uri, -1);
 
-			if (imageFile != null) {
-				SharedPreferences preferences = getPreferenceManager().getSharedPreferences();
-				SharedPreferences.Editor editor = preferences.edit();
+				if (imageFile != null) {
+					SharedPreferences preferences = getPreferenceManager().getSharedPreferences();
+					SharedPreferences.Editor editor = preferences.edit();
 
-				SurespotLog.v(TAG, "compressed image path: %s", imageFile.getAbsolutePath());
-				editor.putString("pref_background_image", imageFile.getAbsolutePath());
-				editor.commit();
+					SurespotLog.v(TAG, "compressed image path: %s", imageFile.getAbsolutePath());
+					editor.putString("pref_background_image", imageFile.getAbsolutePath());
+					editor.commit();
 
-				mBgImagePref.setTitle(R.string.pref_title_background_image_remove);
-				SurespotConfiguration.setBackgroundImageSet(true);
+					mBgImagePref.setTitle(R.string.pref_title_background_image_remove);
+					SurespotConfiguration.setBackgroundImageSet(true);
+				}
+			}
+			else {
+				// notification
+				SharedPreferences pm = getPreferenceManager().getDefaultSharedPreferences(getBaseContext());
+				String alarms = pm.getString("Noise", "NA");
+				Uri alarmUri = Uri.parse(alarms);
+			    //playSound(this, uri);
+				SurespotLog.v(TAG, "notification sound: " + alarmUri);
+
 			}
 		}
 	}

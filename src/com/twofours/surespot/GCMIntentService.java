@@ -12,6 +12,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
@@ -275,6 +276,14 @@ public class GCMIntentService extends GCMBaseIntentService {
 		if (makeSound) {
 			SurespotLog.v(TAG, "making notification sound");
 			defaults |= Notification.DEFAULT_SOUND;
+			//SharedPreferences getAlarms = pm.getDefaultSharedPreferences(getBaseContext());
+			String alarms = pm.getString("Noise", "na");
+			//String alarms = getAlarms.getString("ringtone", "default ringtone");
+			Uri uri = Uri.parse(alarms);
+		    //playSound(this, uri);
+			SurespotLog.v(TAG, "notification sound: " + uri);
+
+			
 		}
 
 		if (vibrate) {
