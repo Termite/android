@@ -206,21 +206,23 @@ public class SettingsActivity extends SherlockPreferenceActivity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == RESULT_OK) {
 			Uri uri = data.getData();
+			if (uri != null) {
+				File imageFile = compressImage(uri, -1);
 
-			File imageFile = compressImage(uri, -1);
+				if (imageFile != null) {
+					SharedPreferences preferences = getPreferenceManager().getSharedPreferences();
+					SharedPreferences.Editor editor = preferences.edit();
 
-			if (imageFile != null) {
-				SharedPreferences preferences = getPreferenceManager().getSharedPreferences();
-				SharedPreferences.Editor editor = preferences.edit();
+					SurespotLog.v(TAG, "compressed image path: %s", imageFile.getAbsolutePath());
+					editor.putString("pref_background_image", imageFile.getAbsolutePath());
+					editor.commit();
 
-				SurespotLog.v(TAG, "compressed image path: %s", imageFile.getAbsolutePath());
-				editor.putString("pref_background_image", imageFile.getAbsolutePath());
-				editor.commit();
-
-				mBgImagePref.setTitle(R.string.pref_title_background_image_remove);
-				SurespotConfiguration.setBackgroundImageSet(true);
+					mBgImagePref.setTitle(R.string.pref_title_background_image_remove);
+					SurespotConfiguration.setBackgroundImageSet(true);
+				}
 			}
 		}
 	}
